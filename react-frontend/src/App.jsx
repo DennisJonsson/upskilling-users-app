@@ -37,6 +37,30 @@ function App() {
     await fetchUsers();
   };
 
+  const createUser = async (e) => {
+    e.preventDefault()
+    const response = await fetch(`${hostUrl}api/users`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({name: e.target.name.value, isAdmin: e.target.isAdmin.checked, isBadass: e.target.isBadass.checked}),
+    });
+    const newUser = await response.json();
+
+    setUsers([...users, newUser]);
+  };
+
+  const deleteUser = async (e) => {
+    await fetch(`${hostUrl}api/users/${e.target.dataset.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    await fetchUsers();
+  }
+
   useEffect(() => {
     fetchUsers();
   },[]);
@@ -44,6 +68,17 @@ function App() {
 
   return (
     <>
+    <h1>New User</h1>
+    <form onSubmit={createUser}>
+      <label htmlFor='name'>Name</label>
+      <input type='text' name='name' id='name'/>
+      <label htmlFor='isAdmin'>Is Admin</label>
+      <input type='checkbox' name='isAdmin' />
+      <label htmlFor='isBadass'>Is Badass</label>
+      <input type='checkbox' name='isBadass'/>
+      <input type='submit' />
+    </form>
+    <br></br>
       <h1>Users</h1>
       <table>
         <thead>
@@ -75,6 +110,9 @@ function App() {
                   checked={user.isBadass}
                   onChange={updateUserBadass}
                 />
+              </td>
+              <td>
+                <button data-id={user.id} onClick={deleteUser}>Delete</button>
               </td>
             </tr>
           ))}
