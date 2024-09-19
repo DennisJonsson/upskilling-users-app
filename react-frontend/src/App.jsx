@@ -12,26 +12,14 @@ function App() {
     setUsers(usersToJson);
   };
 
-
-  const updateUserAdmin = async (e) => {
+  const updateUser = async (e) => {
+    console.log(e.target.name)
     const response = await fetch(`${hostUrl}api/users/${e.target.dataset.id}` , {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({isAdmin: e.target.checked}),
-    });
-    await response.json();
-    await fetchUsers();
-  };
-
-  const updateUserBadass = async (e) => {
-    const response = await fetch(`${hostUrl}api/users/${e.target.dataset.id}` , {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({isBadass: e.target.checked}),
+      body: JSON.stringify({[e.target.name]: e.target.checked}),
     });
     await response.json();
     await fetchUsers();
@@ -99,16 +87,18 @@ function App() {
                 <input
                   data-id={user.id}
                   type="checkbox"
+                  name="isAdmin"
                   checked={user.isAdmin}
-                  onChange={updateUserAdmin}
+                  onChange={updateUser}
                 />
               </td>
               <td>
                 <input
                   data-id={user.id}
                   type="checkbox"
+                  name="isBadass"
                   checked={user.isBadass}
-                  onChange={updateUserBadass}
+                  onChange={updateUser}
                 />
               </td>
               <td>
