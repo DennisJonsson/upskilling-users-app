@@ -3,7 +3,7 @@ const {seedInitialUsers,getAllUsers,getSingleUser,createNewUser,updateUser,delet
 
 const router = express.Router();
 
-router.get('/seeds', seedInitialUsers); 
+router.get('/users/seeds', seedInitialUsers); 
 router.get('/users',getAllUsers);
 router.get('/users/:id',getSingleUser);
 

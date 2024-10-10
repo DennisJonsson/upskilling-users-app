@@ -1,4 +1,4 @@
-const User = require('../Model/User');
+const User = require('../Model/User.js');
 
 const users = [
     { name: "Dutch",  isAdmin: true , isBadass: true},
@@ -43,6 +43,10 @@ const deleteUser = async (req,res) => {
     res.json({data: `The user with id of ${req.params.id} is removed.`})
 }
 
+const grantAccountToUser = async (req,res) => {
+    const user = await User.findByPk(req.params.id);
+    
+}
 module.exports = {
     seedInitialUsers,
     getAllUsers,

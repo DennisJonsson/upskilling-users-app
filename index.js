@@ -1,7 +1,9 @@
 const express = require('express');
 const sequelize = require('./Config/database');
+const userRoutes = require('./Routes/userRoutes');
+const accountRoutes = require('./Routes/accountRoutes');
 const cors = require('cors');
-const path = require('path');
+
 
 const app = express();
 
@@ -14,13 +16,15 @@ sequelize.sync().then(() => {
 app.use(cors());
 
 app.use(express.json());
-app.use('/',express.static(path.join(__dirname,'ikea-react-frontend/dist')));
-//app.use(express.static('ikea-react-frontend/dist'));
+app.use(express.static('ikea-react-frontend/dist'));
 
-const userRoutes = require('./Routes/userRoutes');
+
 app.use('/api', userRoutes);
+app.use('/api',accountRoutes);
 
 const port = process.env.PORT || 8080;
-app.listen(port, async () => {
-    console.log(`Server started at ${port}`);
+
+server =  app.listen(port, async () => {
+    console.log(`Server started at ${port}`)
 });
+module.exports = {app, server}

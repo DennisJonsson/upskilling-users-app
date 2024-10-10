@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "testBackend": "jest tests/index.test.jsx"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,20 @@
     "express": "^4.21.0",
     "nodemon": "^3.1.4",
     "sequelize": "^6.37.3",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.7",
+    "@babel/preset-env": "^7.25.7",
+    "@babel/preset-react": "^7.25.7",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "babel-jest": "^29.7.0",
+    "babel-plugin-transform-import-meta": "^2.2.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
