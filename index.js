@@ -22,7 +22,7 @@ app.use(express.static('ikea-react-frontend/dist'));
 app.use('/api', userRoutes);
 app.use('/api',accountRoutes);
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 
 server =  app.listen(port, async () => {
     console.log(`Server started at ${port}`)

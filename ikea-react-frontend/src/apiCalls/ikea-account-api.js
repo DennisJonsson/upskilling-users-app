@@ -2,10 +2,6 @@ export const fetchAccounts = async (hostUrl,setAccounts) => {
     console.log("Fetching accounts")
     try {
         const response = await fetch(`${hostUrl}api/accounts`);
-
-        //If (!response.ok) {
-        //    throw new Error(`$response.statusText`);
-       //}
             
         const accountsToJson = await response.json();
         console.log(accountsToJson);
@@ -18,7 +14,6 @@ export const fetchAccounts = async (hostUrl,setAccounts) => {
 };
 
 export const updateAccount = async (e,hostUrl,setAccounts) => {
-    console.log(e.target.name)
     const response = await fetch(`${hostUrl}api/accounts/${e.target.dataset.id}`, {
         method: "PUT",
         headers: {
@@ -30,27 +25,27 @@ export const updateAccount = async (e,hostUrl,setAccounts) => {
     await fetchAccounts(hostUrl,setAccounts);
 };
 
-export const createUser = async (e,hostUrl,users,setAccounts) => {
+export const createAccount = async (e,hostUrl,accounts,setAccounts) => {
     e.preventDefault()
     const response = await fetch(`${hostUrl}api/accounts`, {
         method: "POST",
         headers: {
             "Content-type": "application/json",
         },
-        body: JSON.stringify({ name: e.target.name.value }),
+        body: JSON.stringify({ name: e.target.accountName.value }),
     });
     const newAccount = await response.json();
 
     setAccounts([...accounts, newAccount]);
 };
 
-export const deleteUser = async (e,hostUrl,setAccounts) => {
+export const deleteAccount = async (e,hostUrl,setAccounts) => {
     await fetch(`${hostUrl}api/accounts/${e.target.dataset.id}`, {
         method: "DELETE",
         headers: {
             "Content-type": "application/json",
         },
     });
-    await fetchUsers(hostUrl,setAccounts);
+    await fetchAccounts(hostUrl,setAccounts);
 }
 

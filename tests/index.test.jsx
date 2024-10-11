@@ -55,14 +55,34 @@ describe('Create New User', () => {
     });
 });
 
+describe('Update User', () => {
+    test('It should update a user', async () => {
+        const updatedUser = {
+            name: 'Dennis Tyrebrant',
+            isAdmin: true,
+            isBadass: true,
+        };
+        const response = await request(app).put(`/api/users/${createdId}`)
+            .send(updatedUser)
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(200);
+        expect(response.body.name).toBe(updatedUser.name);
+        expect(response.body.isAdmin).toBe(updatedUser.isAdmin);
+        expect(response.body.isBadass).toBe(updatedUser.isBadass);
+    });
+});
+
 describe('Delete user', () => {
     test('It should remove a user', async () => {
         const response = await request(app).delete(`/api/users/${createdId}`);
 
         expect(response.status).toBe(200);
         expect(response.body.data).toBe(`The user with id of ${createdId} is removed.`)
-    })
-})
+    });
+});
+
+
 
 afterAll(async () => {
     await sequelize.close();

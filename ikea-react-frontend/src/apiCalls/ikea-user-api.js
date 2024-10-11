@@ -28,8 +28,13 @@ export const createUser = async (e,hostUrl,users,setUsers) => {
         body: JSON.stringify({ name: e.target.name.value, isAdmin: e.target.isAdmin.checked, isBadass: e.target.isBadass.checked }),
     });
     const newUser = await response.json();
+    
+    const userWithAccounts = {
+        ...newUser,
+        accounts: newUser.accounts || [],
+    };
 
-    setUsers([...users, newUser]);
+    setUsers([...users, userWithAccounts]);
 };
 
 export const deleteUser = async (e,hostUrl,setUsers) => {
@@ -40,5 +45,26 @@ export const deleteUser = async (e,hostUrl,setUsers) => {
         },
     });
     await fetchUsers(hostUrl,setUsers);
-}
+};
+
+export const assignAccount = async (hostUrl,userId, accountId, isChecked,setUsers) => {
+    try {
+        const response = await fetch(`${hostUrl}api/users/${userId}/accounts`, {
+            method: isChecked ? 'POST' : 'DELETE',
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({ accountId }),
+        });
+
+        if (response.ok) {
+            console.log(`Account ${isChecked ? 'assigned' : 'removed'} successfully`);
+            await fetchUsers(hostUrl,setUsers);
+        } else {
+            console.error("Failed to assign/remove account.");
+        }
+    } catch (error) {
+        console.error("Error assigning/removing account:", error);
+    }
+};
 

@@ -1,4 +1,4 @@
-const User = require('../Model/User.js');
+const {User,Account} = require('../Model/associations');
 
 const users = [
     { name: "Dutch",  isAdmin: true , isBadass: true},
@@ -14,7 +14,7 @@ const seedInitialUsers = async (req,res) => {
 }
 
 const getAllUsers = async (req,res) => {
-    const users = await User.findAll();
+    const users = await User.findAll({include: Account});
     res.json(users);
 }
 
@@ -43,15 +43,54 @@ const deleteUser = async (req,res) => {
     res.json({data: `The user with id of ${req.params.id} is removed.`})
 }
 
-const grantAccountToUser = async (req,res) => {
-    const user = await User.findByPk(req.params.id);
+const assignAccount = async (req,res) => {
+    const { accountId } = req.body;
+
+    try {
+        const user = await User.findByPk(req.params.id);
+        const account = await Account.findByPk(accountId);
+
+        if (!user || !account) {
+            return res.status(404).json({ message : "User or Account not found", user: user, account: account});
+        }
+
+        await user.addAccount(account);
+
+        res.status(200).json({ message: "Account assigned successfully"});
+    } catch (error) {
+        console.error("Error assigning account: ", error);
+        res.status(500).json({ message: "Internal server error"});
+    }
     
 }
+
+const unAssignAccount = async (req,res) => {
+    const { accountId } = req.body;
+    
+    try {
+        const user = await User.findByPk(req.params.id);
+        const account = await Account.findByPk(accountId);
+
+        if (!user || !account) {
+            return res.status(404).json({ message : "User or Account not found", user: user, account: account});
+        }
+
+        await user.removeAccount(account);
+
+        res.status(200).json({ message: "Account removed successfully"});
+    } catch (error) {
+        console.error("Error removing account: ", error);
+        res.status(500).json({ message: "Internal server error"});
+    }
+}
+
 module.exports = {
     seedInitialUsers,
     getAllUsers,
     getSingleUser,
     createNewUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    assignAccount,
+    unAssignAccount
 }
